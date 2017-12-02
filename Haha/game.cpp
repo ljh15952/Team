@@ -47,7 +47,7 @@ bool New::init()
 	auto Quit = MenuItemImage::create("BackBt.png", "BackBt2.png", CC_CALLBACK_1( New::menuCallback, this));
 	auto menu = Menu::create(Quit, NULL);
 	menu->setPosition(Vec2(100, 650));
-	this->addChild(menu, 1);
+	this->addChild(menu, 2);
 	///
 	
 
@@ -59,24 +59,24 @@ bool New::init()
 	auto Money = Label::createWithTTF("Money", "fonts/Marker Felt.ttf", 24);
 	Money->setString(StringUtils::format("%d",Money2));
 	Money->setPosition(Vec2(610, 670));
-	this->addChild(Money, 1);
+	this->addChild(Money, 2);
 
 	Closet = Sprite::create("Closet.png");
 	Closet ->setScale(0.7f);
 	Closet->setPosition(Vec2(1000, 65));
-	this->addChild(Closet, 1);
+	this->addChild(Closet, 2);
 
 	Shop = Sprite::create("Shop.png");
 	Shop->setScale(0.7f);
 	Shop->setPosition(Vec2(1150, 65));
-	this->addChild(Shop, 1);
+	this->addChild(Shop, 2);
 
 	Coin = Sprite::create("coin.png");
 	Coin->setPosition(Vec2(540, 670));
-	this->addChild(Coin, 1);
+	this->addChild(Coin, 2);
 
 	All = Sprite::create();
-	this->addChild(All, 2);
+	this->addChild(All, 3);
 
 	PopUp = Sprite::create("4.png");
 	PopUp->setPosition(Vec2(650, 370));
@@ -103,7 +103,7 @@ bool New::init()
 	All->addChild(Dress, 2);
 	///////////////  Ã©ÅÍ1
 	AllCp = Sprite::create();
-	this->addChild(AllCp, 0);
+	this->addChild(AllCp, 1);
 
 	BackGround1 = Sprite::create("Bg.png");
 	BackGround1->setAnchorPoint(Vec2(0, 0));
@@ -171,7 +171,7 @@ bool New::init()
 	//////
 
 	////Ã©ÅÍ 3
-	BackGround3 = Sprite::create("Stage3/Bg3.png");
+	BackGround3 = Sprite::create("Bg.png");
 	BackGround3->setAnchorPoint(Vec2(0, 0));
 	BackGround3->setPosition(Vec2(2560, 0));
 	AllCp->addChild(BackGround3, 0);
@@ -181,25 +181,9 @@ bool New::init()
 		Stage3[i] = Sprite::create(StringUtils::format("Stage3/stage3_%d.png", i + 1));
 		Stage3[i]->setAnchorPoint(Vec2(0, 0));
 		Stage3[i]->setScale(0.9f);
-		Stage3[i]->setPosition(Vec2(2600 + (305 * i), 220));
+		Stage3[i]->setPosition(Vec2(2600 + (330 * i), 220 + -(20 * i)));
 		AllCp->addChild(Stage3[i], 1);
 	}
-
-	starone3 = Sprite::create("star_0.png");
-	starone3->setPosition(Vec2(183 + 2560, 180));
-	AllCp->addChild(starone3, 1);
-
-	startwo3 = Sprite::create("star_0.png");
-	startwo3->setPosition(Vec2(485 + 2560, 200));
-	AllCp->addChild(startwo3, 1);
-
-	starthree3 = Sprite::create("star_0.png");
-	starthree3->setPosition(Vec2(805 + 2560, 230));
-	AllCp->addChild(starthree3, 1);
-
-	starfour3 = Sprite::create("star_0.png");
-	starfour3->setPosition(Vec2(1090 + 2560, 260));
-	AllCp->addChild(starfour3, 1);
 	/////
 
 	////Ã©ÅÍ4
@@ -283,6 +267,13 @@ bool New::init()
 	AllCp->setPosition(Vec2(point::get()->ScreenX, 0));
 	CCLOG("Screen X = %d", point::get()->ScreenX);
 	
+	visibleBg = Sprite::create("visibleBg.png");
+	visibleBg->setAnchorPoint(Vec2(0, 0));
+	visibleBg->setPosition(Vec2(0, 0));
+	visibleBg->setOpacity(120);
+	visibleBg->setVisible(false);
+	this->addChild(visibleBg, 2);
+
 	return true;
 }
 
@@ -310,25 +301,22 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 		if (Closet->getBoundingBox().containsPoint(touch->getLocation()) && bisClick != true)
 		{
 			Closet->setTexture(Director::getInstance()->getTextureCache()->addImage("Closet2.png"));
-
+			Closet->setScale(0.9f);
 			Sex = 1;
 		}
 		if (Shop->getBoundingBox().containsPoint(touch->getLocation())&&bisClick!=true)
 		{
 			Shop->setTexture(Director::getInstance()->getTextureCache()->addImage("Shop2.png"));
-
+			Shop->setScale(0.9f);
 			Sex = 2;
 		}
 		if (Closebt->getBoundingBox().containsPoint(touch->getLocation()))
 		{
 			All->setVisible(false);
 			bisClick = false;
-			BackGround1->setOpacity(255);
-			BackGround2->setOpacity(255);
-			BackGround3->setOpacity(255);
-			BackGround4->setOpacity(255);
 			DressAll->setVisible(false);
 			AccAll->setVisible(false);
+			visibleBg->setVisible(false);
 		}
 		if (OptionBt->getBoundingBox().containsPoint(touch->getLocation()) && bisClick != true)
 		{
@@ -350,12 +338,14 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 		if (RtArrow->getBoundingBox().containsPoint(touch->getLocation()) && bisClick != true)
 		{
 			RtArrow->setTexture(Director::getInstance()->getTextureCache()->addImage("RightArrow2.png"));
+			RtArrow->setScale(1.2f);
 			Sex2 = 1;
 			
 		}
 		if (LtArrow->getBoundingBox().containsPoint(touch->getLocation()) && bisClick != true)
 		{
 			LtArrow->setTexture(Director::getInstance()->getTextureCache()->addImage("LeftArrow2.png"));
+			LtArrow->setScale(1.2f);
 			Sex2 = 2;
 		}
 	}
@@ -366,15 +356,15 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 		{
 			if (Bt1[0]->getBoundingBox().containsPoint(touch->getLocation()))
 			{
-				Dress->setZOrder(3);
-				Accessory->setZOrder(2);
+				Dress->setZOrder(5);
+				Accessory->setZOrder(4);
 				DressAll->setVisible(true);
 				AccAll->setVisible(false);
 			}
 			if (Bt1[1]->getBoundingBox().containsPoint(touch->getLocation()))
 			{
-				Dress->setZOrder(2);
-				Accessory->setZOrder(3);
+				Dress->setZOrder(4);
+				Accessory->setZOrder(5);
 				DressAll->setVisible(false);
 				AccAll->setVisible(true);
 			}
@@ -420,12 +410,12 @@ void New::onTouchMoved(Touch* touch, Event* _event)
 	auto point = touch->getLocation();//Å¬¸¯ÁÂÇ¥¾ò±â
 	if (sexClick1 == true)
 	{
-		SelectDress[ClickNum]->setZOrder(5);
+		SelectDress[ClickNum]->setZOrder(6);
 		SelectDress[ClickNum]->setPosition(Vec2(point.x, point.y));
 	}
 	if (sexClick2 == true)
 	{
-		SelectAcc[ClickNum]->setZOrder(5);
+		SelectAcc[ClickNum]->setZOrder(6);
 		SelectAcc[ClickNum]->setPosition(Vec2(point.x, point.y));
 	}
 }
@@ -502,12 +492,7 @@ void New::onTouchEnded(Touch* touch, Event* _event)
 			StageClick = false;
 			StageNum = -1;
 	}
-	
-	Closet->setTexture(Director::getInstance()->getTextureCache()->addImage("Closet.png"));
-	Shop->setTexture(Director::getInstance()->getTextureCache()->addImage("Shop.png"));
-	RtArrow->setTexture(Director::getInstance()->getTextureCache()->addImage("RightArrow.png"));
-	LtArrow->setTexture(Director::getInstance()->getTextureCache()->addImage("LeftArrow.png"));
-
+	BtEnded();
 }
 void New::MenuClick(int Clicknum)
 {
@@ -515,13 +500,9 @@ void New::MenuClick(int Clicknum)
 		if (Clicknum == 1) // ¿ÊÀå Å¬¸¯
 		{
 			bisClick = true;
+			visibleBg->setVisible(true);
 			DressAll->setVisible(true);
 			All->setVisible(true);
-			BackGround1->setOpacity(140);
-			BackGround2->setOpacity(140);
-			BackGround3->setOpacity(140);
-			BackGround4->setOpacity(140);
-		
 			DressOn();
 		}
 		else if (Clicknum == 2) // »óÁ¡ Å¬¸¯ 
@@ -568,4 +549,17 @@ void New::ScreenMove(int Num)
 		point::get()->ScreenX += 1280 * Num;
 		AllCp->runAction(MoveBy::create(0.1, Vec2(1280 * Num, 0)));
 	}
+}
+
+void New::BtEnded()
+{
+
+	Closet->setTexture(Director::getInstance()->getTextureCache()->addImage("Closet.png"));
+	Shop->setTexture(Director::getInstance()->getTextureCache()->addImage("Shop.png"));
+	RtArrow->setTexture(Director::getInstance()->getTextureCache()->addImage("RightArrow.png"));
+	LtArrow->setTexture(Director::getInstance()->getTextureCache()->addImage("LeftArrow.png"));
+	Closet->setScale(0.7f);
+	Shop->setScale(0.7f);
+	RtArrow->setScale(1.0f);
+	LtArrow->setScale(1.0f);
 }

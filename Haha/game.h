@@ -19,6 +19,7 @@ public:
 	void MenuClick(int Clicknum);
 	void DressOn();
 	void ScreenMove(int Num);
+	void BtEnded();
 	Sprite *Closet;
 	Sprite * Shop;
 	Sprite * Alice1;
@@ -44,10 +45,11 @@ public:
 	Sprite *  starthree2;
 	Sprite *  starfour2;
 
-	////// 
-	////Chapter 3
-	Sprite *BackGround3;
-	Sprite *Stage3[4];
+	//////
+	///// chapter 3
+	Sprite * BackGround3;
+
+	Sprite * Stage3[4];
 
 	Sprite *  starone3;
 	Sprite *  startwo3;
@@ -55,10 +57,8 @@ public:
 	Sprite *  starfour3;
 
 
-
-
-	///////
-
+	/////
+	
 	Sprite * BackGround4;
 	Sprite * OptionAll;
 	Sprite * OptionBt;
@@ -93,7 +93,7 @@ public:
 
 	Sprite *SelectAcc[10];
 	Sprite * AccAll;
-
+	Sprite *visibleBg;
 
 	CREATE_FUNC(New);
 
