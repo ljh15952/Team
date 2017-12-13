@@ -15,11 +15,13 @@ public:
 	virtual bool onTouchBegan(Touch* touch, Event*_event);
 	virtual void onTouchMoved(Touch* touch, Event*_event);
 	virtual void onTouchEnded(Touch* touch, Event*_event); 
+	virtual void update(float dt);
 	void menuCallback(cocos2d::Ref* Psender);
 	void MenuClick(int Clicknum);
 	void DressOn();
 	void ScreenMove(int Num);
 	void BtEnded();
+
 	Sprite *Closet;
 	Sprite * Shop;
 	Sprite * Alice1;
@@ -81,13 +83,14 @@ public:
 	bool sexClick1;
 	bool sexClick2;
 	bool ArrowClick;
+	bool closetClick;
 	Sprite *Closebt;
 	Sprite *All;
 	Sprite *Bt1[2];
-	
+	Sprite * StartStage;
 	Sprite *Dress;
 	Sprite * Accessory;
-
+	Sprite * X;
 	Sprite * SelectDress[10];
 	Sprite * DressAll;
 

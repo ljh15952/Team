@@ -65,6 +65,7 @@ bool Chapter::onTouchBegan(Touch* touch, Event* _event)
 		{
 			if (Chapters[i]->getBoundingBox().containsPoint(touch->getLocation()))
 			{
+				SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 				ClickNum = i;
 			}
 		}

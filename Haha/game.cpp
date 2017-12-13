@@ -52,6 +52,7 @@ bool New::init()
 	
 
 	bisClick = false;
+	closetClick = false;
 	sexClick1 = false;
 	sexClick2 = false;
 	OptionClick = false;
@@ -88,9 +89,9 @@ bool New::init()
 	All->addChild(Closebt, 2);
 
 	Alice1 = Sprite::create("5.png");
-	Alice1->setPosition(Vec2(300, 350));
+	Alice1->setPosition(Vec2(390, 350));
 	
-	All ->addChild(Alice1, 2);
+	All ->addChild(Alice1, 5);
 
 	Accessory = Sprite::create("6.png");
 	Accessory->setPosition(Vec2(800, 400));
@@ -171,7 +172,7 @@ bool New::init()
 	//////
 
 	////Ã©ÅÍ 3
-	BackGround3 = Sprite::create("Bg.png");
+	BackGround3 = Sprite::create("Bg3.png");
 	BackGround3->setAnchorPoint(Vec2(0, 0));
 	BackGround3->setPosition(Vec2(2560, 0));
 	AllCp->addChild(BackGround3, 0);
@@ -228,9 +229,9 @@ bool New::init()
 	{
 		SelectDress[i] = Sprite::create("1.png");
 		if(i<5)
-		   SelectDress[i]->setPosition(Vec2(600 + (100 * i), 500 ));
+		   SelectDress[i]->setPosition(Vec2(600 + (130 * i), 500 ));
 		else
-		   SelectDress[i]->setPosition(Vec2(100 + (100 * i), 400));
+		   SelectDress[i]->setPosition(Vec2(-50 + (130 * i), 380));
 	
 		
 		DressAll->addChild(SelectDress[i], 4);
@@ -241,12 +242,22 @@ bool New::init()
 	{
 		SelectAcc[i] = Sprite::create("1.png");
 		if (i<5)
-			SelectAcc[i]->setPosition(Vec2(600 + (100 * i), 500));
+			SelectAcc[i]->setPosition(Vec2(600 + (130 * i), 500));
 		else
-			SelectAcc[i]->setPosition(Vec2(100 + (100 * i), 400));
+			SelectAcc[i]->setPosition(Vec2(-50 + (130 * i), 380));
 		
 		AccAll->addChild(SelectAcc[i], 4);
 	}
+
+	StartStage = Sprite::create("StartStage.png");
+	StartStage->setAnchorPoint(Vec2(0.5, 0.5));
+	StartStage->setPosition(Vec2(500, 300));
+	StartStage->setVisible(false);
+	this->addChild(StartStage, 3);
+	
+	X = Sprite::create("X.png");
+	X->setPosition(Vec2(60, 380));
+	StartStage->addChild(X, 3);
 
 	All->setVisible(false);
 	DressAll->setVisible(false);
@@ -273,6 +284,8 @@ bool New::init()
 	visibleBg->setOpacity(120);
 	visibleBg->setVisible(false);
 	this->addChild(visibleBg, 2);
+	
+	scheduleUpdate();
 
 	return true;
 }
@@ -281,6 +294,7 @@ void New::menuCallback(cocos2d::Ref * pSender)
 {
 	if (bisClick != true)
 	{
+		SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 		Scene *pScene = Chapter::ChapterScene();
 		Director::getInstance()->replaceScene(pScene);
 	}
@@ -298,20 +312,24 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 	if (Closet != nullptr || Shop != nullptr || Closebt != nullptr|| OptionBt !=nullptr|| OptionBack!=nullptr||VolumeUp!=nullptr||RtArrow!=nullptr||LtArrow!=nullptr)
 	{
 
-		if (Closet->getBoundingBox().containsPoint(touch->getLocation()) && bisClick != true)
+		if (Closet->getBoundingBox().containsPoint(touch->getLocation())&&bisClick!=true)
 		{
+			SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 			Closet->setTexture(Director::getInstance()->getTextureCache()->addImage("Closet2.png"));
 			Closet->setScale(0.9f);
+			closetClick = true;
 			Sex = 1;
 		}
 		if (Shop->getBoundingBox().containsPoint(touch->getLocation())&&bisClick!=true)
 		{
+			SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 			Shop->setTexture(Director::getInstance()->getTextureCache()->addImage("Shop2.png"));
 			Shop->setScale(0.9f);
 			Sex = 2;
 		}
 		if (Closebt->getBoundingBox().containsPoint(touch->getLocation()))
 		{
+			closetClick = false;
 			All->setVisible(false);
 			bisClick = false;
 			DressAll->setVisible(false);
@@ -320,12 +338,14 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 		}
 		if (OptionBt->getBoundingBox().containsPoint(touch->getLocation()) && bisClick != true)
 		{
+			SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 			OptionClick = true;
 			OptionBt ->setTexture(Director::getInstance()->getTextureCache()->addImage("1.png"));
 			
 		}
 		if (OptionBack->getBoundingBox().containsPoint(touch->getLocation()))
 		{
+			SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 			OptionAll->setVisible(false);
 			bisClick = false;
 		}
@@ -337,6 +357,7 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 		}
 		if (RtArrow->getBoundingBox().containsPoint(touch->getLocation()) && bisClick != true)
 		{
+			SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 			RtArrow->setTexture(Director::getInstance()->getTextureCache()->addImage("RightArrow2.png"));
 			RtArrow->setScale(1.2f);
 			Sex2 = 1;
@@ -344,6 +365,7 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 		}
 		if (LtArrow->getBoundingBox().containsPoint(touch->getLocation()) && bisClick != true)
 		{
+			SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 			LtArrow->setTexture(Director::getInstance()->getTextureCache()->addImage("LeftArrow2.png"));
 			LtArrow->setScale(1.2f);
 			Sex2 = 2;
@@ -352,10 +374,11 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 
 	for (int i = 0; i < 2; i++)
 	{
-		if (Bt1[i] != nullptr&&bisClick==true)
+		if (Bt1[i] != nullptr&&closetClick == true)
 		{
 			if (Bt1[0]->getBoundingBox().containsPoint(touch->getLocation()))
 			{
+				SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 				Dress->setZOrder(5);
 				Accessory->setZOrder(4);
 				DressAll->setVisible(true);
@@ -363,6 +386,7 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 			}
 			if (Bt1[1]->getBoundingBox().containsPoint(touch->getLocation()))
 			{
+				SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 				Dress->setZOrder(4);
 				Accessory->setZOrder(5);
 				DressAll->setVisible(false);
@@ -378,11 +402,13 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 		{
 			if (SelectDress[i]->getBoundingBox().containsPoint(touch->getLocation())&&point::get()->AbleDress[i]==true)
 			{
+				SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 				ClickNum = i;
 				sexClick1 = true;
 			}
 			if (SelectAcc[i]->getBoundingBox().containsPoint(touch->getLocation())&&point::get()->AbleAcc[i] ==true)
 			{
+				SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 				ClickNum = i;
 				sexClick2 = true;
 			}
@@ -394,12 +420,17 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 		{
 			if (Stage[i]->getBoundingBox().containsPoint(touch->getLocation()))
 			{
+				SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
+				StartStage->setVisible(true);
+				bisClick = true;
 				StageClick = true;
 				StageNum = i;
 			}
 		}
 	}
 	
+	
+
 		return true;
 }
 
@@ -450,9 +481,9 @@ void New::onTouchEnded(Touch* touch, Event* _event)
 		for (int i = 0; i < 10; i++)
 		{
 			if (i<5)
-				SelectDress[i]->setPosition(Vec2(600 + (100 * i), 500));
+				SelectDress[i]->setPosition(Vec2(600 + (130 * i), 500));
 			else
-				SelectDress[i]->setPosition(Vec2(100 + (100 * i), 400));
+				SelectDress[i]->setPosition(Vec2(-50 + (130 * i), 380));
 		}
 		sexClick1 = false;
 	}
@@ -461,9 +492,9 @@ void New::onTouchEnded(Touch* touch, Event* _event)
 		for (int i = 0; i < 10; i++)
 		{
 			if (i<5)
-				SelectAcc[i]->setPosition(Vec2(600 + (100 * i), 500));
+				SelectAcc[i]->setPosition(Vec2(600 + (130 * i), 500));
 			else
-				SelectAcc[i]->setPosition(Vec2(100 + (100 * i), 400));
+				SelectAcc[i]->setPosition(Vec2(-50 + (130 * i), 380));
 		}
 		sexClick2 = false;
 	}
@@ -489,7 +520,7 @@ void New::onTouchEnded(Touch* touch, Event* _event)
 				CCLOG("stage %d", i+1);
 			}
 		}
-			StageClick = false;
+			///////StageClick = false;
 			StageNum = -1;
 	}
 	BtEnded();
@@ -508,6 +539,7 @@ void New::MenuClick(int Clicknum)
 		else if (Clicknum == 2) // »óÁ¡ Å¬¸¯ 
 		{
 			//// ¾ÀÀüÈ¯
+			
 			Scene *pScene = HelloWorld::createScene();
 			Director::getInstance()->replaceScene(pScene);
 			////	
@@ -562,4 +594,23 @@ void New::BtEnded()
 	Shop->setScale(0.7f);
 	RtArrow->setScale(1.0f);
 	LtArrow->setScale(1.0f);
+}
+
+void New::update(float dt)
+{
+	static float t1 = 0;
+	static float a = 0.0;
+	t1 += dt;
+
+	if (t1 > 0.01&&StageClick)
+	{
+		CCLOG("%f", t1);
+		a += 0.05;
+		StartStage->setScale(a);
+		if (a >1.0)
+		{
+			StageClick = false;
+		}
+		t1 = 0;
+	}
 }
