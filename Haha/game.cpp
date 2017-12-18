@@ -57,6 +57,7 @@ bool New::init()
 	sexClick2 = false;
 	OptionClick = false;
 	StageClick = false;
+	StageClick2 = false;
 	auto Money = Label::createWithTTF("Money", "fonts/Marker Felt.ttf", 24);
 	Money->setString(StringUtils::format("%d",Money2));
 	Money->setPosition(Vec2(610, 670));
@@ -233,7 +234,6 @@ bool New::init()
 		else
 		   SelectDress[i]->setPosition(Vec2(-50 + (130 * i), 380));
 	
-		
 		DressAll->addChild(SelectDress[i], 4);
 	}
 	AccAll = Sprite::create();
@@ -248,6 +248,7 @@ bool New::init()
 		
 		AccAll->addChild(SelectAcc[i], 4);
 	}
+	
 
 	StartStage = Sprite::create("StartStage.png");
 	StartStage->setAnchorPoint(Vec2(0.5, 0.5));
@@ -256,8 +257,11 @@ bool New::init()
 	this->addChild(StartStage, 3);
 	
 	X = Sprite::create("X.png");
-	X->setPosition(Vec2(60, 380));
-	StartStage->addChild(X, 3);
+	X->setPosition(Vec2(230,450));
+	X->setVisible(false);
+	this->addChild(X, 3);
+
+	
 
 	All->setVisible(false);
 	DressAll->setVisible(false);
@@ -341,7 +345,6 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 			SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 			OptionClick = true;
 			OptionBt ->setTexture(Director::getInstance()->getTextureCache()->addImage("1.png"));
-			
 		}
 		if (OptionBack->getBoundingBox().containsPoint(touch->getLocation()))
 		{
@@ -371,7 +374,13 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 			Sex2 = 2;
 		}
 	}
-
+	if (X->getBoundingBox().containsPoint(touch->getLocation())&&bisClick ==true)
+	{
+		bisClick = false;
+		StageClick2 = true;
+		X->setVisible(false);
+		//StartStage->setVisible(false);
+	}
 	for (int i = 0; i < 2; i++)
 	{
 		if (Bt1[i] != nullptr&&closetClick == true)
@@ -416,24 +425,24 @@ bool New::onTouchBegan(Touch* touch, Event* _event)
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		if (Stage[i] != nullptr&& bisClick != true)
+		if (Stage[i] != nullptr&& bisClick != true&&StageClick2==false)
 		{
 			if (Stage[i]->getBoundingBox().containsPoint(touch->getLocation()))
 			{
+				CCLOG("SDDS");
 				SimpleAudioEngine::getInstance()->playEffect("BtClick.wav");
 				StartStage->setVisible(true);
 				bisClick = true;
 				StageClick = true;
 				StageNum = i;
 			}
-		}
+		} 
 	}
 	
 	
 
 		return true;
 }
-
 
 
 void New::onTouchMoved(Touch* touch, Event* _event)
@@ -517,6 +526,7 @@ void New::onTouchEnded(Touch* touch, Event* _event)
 		{
 			if (Stage[i]->getBoundingBox().containsPoint(touch->getLocation())&&StageNum==i)
 			{
+				//StartStage->setVisible(true);
 				CCLOG("stage %d", i+1);
 			}
 		}
@@ -599,8 +609,11 @@ void New::BtEnded()
 void New::update(float dt)
 {
 	static float t1 = 0;
+	static float t2 = 0;
 	static float a = 0.0;
+	static float b = 1.0;
 	t1 += dt;
+	t2 += dt;
 
 	if (t1 > 0.01&&StageClick)
 	{
@@ -609,8 +622,21 @@ void New::update(float dt)
 		StartStage->setScale(a);
 		if (a >1.0)
 		{
+			X->setVisible(true);
 			StageClick = false;
 		}
 		t1 = 0;
+	}
+
+	if (t2 > 0.01 && StageClick2)
+	{
+		a -= 0.05;
+		StartStage->setScale(a);
+		if (a < 0.0)
+		{
+			StageClick2 = false;
+			StageClick = false;
+		}
+		t2 = 0;
 	}
 }

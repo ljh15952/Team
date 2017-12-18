@@ -71,12 +71,14 @@ public:
 	Sprite * Coin;
 	Sprite * LtArrow;
 	Sprite * RtArrow;
+
 	int Sex;
 	int Sex2;
 	float VolumeNum;
 	bool bisClick;
 	bool OptionClick;
 	bool StageClick;
+	bool StageClick2;
 	int StageNum;
 	int ClickNum;
 	int Screen;
